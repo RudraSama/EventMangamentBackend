@@ -73,6 +73,12 @@ const registerAttendie = async(req, res)=>{
         if(!event){
             return res.status(404).json({ message: "Event not found" });
         }
+
+        console.log(user_id);
+
+        if(!user_id){
+            return res.status(401).json({message: "User not found"});
+        }
         
         let attendies = event.eventAttendies;
         attendies.push(user_id);
@@ -95,6 +101,10 @@ const registerAttendie = async(req, res)=>{
 const unregisterAttendie = async(req, res)=>{
     try{
         const user_id = req.body.user_id;
+
+        if(!user_id){
+            return res.status(401).json({message: "User not found"});
+        }
         await Event.findByIdAndUpdate(req.params.id,
             {$pull: { eventAttendies: user_id}},
             {new: true}

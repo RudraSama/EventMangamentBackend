@@ -13,7 +13,7 @@ const multerMid = [
     {name: 'event_banner', maxCount: 1}
 ]
 
-router.post('/createEvent', upload.fields(multerMid), createEvent);
+router.post('/createEvent', protect, upload.fields(multerMid), createEvent);
 router.get('/getEvents', getEvents);
 router.get('/getEvent/:id', getEvent);
 router.post('/registerToEvent/:id', protect, registerAttendie);
