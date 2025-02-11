@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require("multer");
 
-const {createEvent, getEvents, getEvent, registerAttendie, unregisterAttendie, deleteEvent} = require('../controllers/eventController');
+const {createEvent, getEvents, getEvent, registerAttendie, unregisterAttendie, deleteEvent, editEvent} = require('../controllers/eventController');
 
 const upload = multer();
 
@@ -18,6 +18,7 @@ router.get('/getEvents', getEvents);
 router.get('/getEvent/:id', getEvent);
 router.post('/registerToEvent/:id', protect, registerAttendie);
 router.post('/unregisterToEvent/:id', protect, unregisterAttendie);
+router.put('/editEvent/:id', protect, upload.fields(multerMid), editEvent);
 router.post('/deleteEvent/:id', protect, deleteEvent);
 
 module.exports = router;

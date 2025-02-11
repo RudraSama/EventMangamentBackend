@@ -118,6 +118,42 @@ const unregisterAttendie = async(req, res)=>{
     }
 }
 
+const editEvent = async(req, res)=>{
+    try{
+        const event_id = req.params.id;
+        
+        let imageUrl = "";
+        if(Object.keys(req.files).length > 0){
+            imageUrl = await uploadToCloudinary(req.files.event_banner[0]);
+        }
+
+        if(!event_id){
+            res.status(401).json({message: "Event id null"});
+        }
+        const updatedData = {
+            eventName: req.body.event_name,
+            eventDescription: req.body.event_description,
+            eventCategory: req.body.event_category,
+            eventDate: new Date(req.body.event_date),
+            eventLocation: req.body.event_location,
+        };
+
+        if(imageUrl !== ""){
+            updatedData.eventBannerUrl = imageUrl;
+        }
+
+        await Event.findByIdAndUpdate(event_id,
+            {$set: updatedData},
+            {new: true}
+        );
+
+        res.status(201).json({ message: "Event Updated Successfully!"});
+    }
+    catch(error){
+
+    }
+}
+
 const deleteEvent = async(req, res)=>{
     try{
         const event_id = req.params.id;
@@ -138,5 +174,5 @@ const deleteEvent = async(req, res)=>{
     }
 }
 
-module.exports = {createEvent, getEvents, getEvent, registerAttendie, unregisterAttendie, deleteEvent};
+module.exports = {createEvent, getEvents, getEvent, registerAttendie, unregisterAttendie, deleteEvent, editEvent};
 
