@@ -118,5 +118,25 @@ const unregisterAttendie = async(req, res)=>{
     }
 }
 
-module.exports = {createEvent, getEvents, getEvent, registerAttendie, unregisterAttendie};
+const deleteEvent = async(req, res)=>{
+    try{
+        const event_id = req.params.id;
+
+        const deleted = await Event.findByIdAndDelete(event_id);
+
+
+        if(deleted){
+            res.status(201).json({deleted: true});
+        }
+        else{
+            res.json({deleted: false});
+        }
+    }
+    catch(error){
+        console.error("Error fetching event:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+module.exports = {createEvent, getEvents, getEvent, registerAttendie, unregisterAttendie, deleteEvent};
 
